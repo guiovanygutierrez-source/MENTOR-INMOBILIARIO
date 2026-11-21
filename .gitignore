@@ -1,0 +1,8 @@
+.env
+.env.*
+!.env.example
+__pycache__/
+.mentor-port
+tmp/
+MENTOR-INMOBILIARIO-PARA-AMIGA/
+MENTOR-INMOBILIARIO-PARA-AMIGA.zip

@@ -1,0 +1,13 @@
+{
+  "name": "mentor-inmobiliario-colombia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Plataforma local de aprendizaje inmobiliario para Colombia",
+  "scripts": {
+    "start": "python mentor_server.py",
+    "test": "node --test && python -m unittest discover -s tests -p test_mentor_server.py"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
