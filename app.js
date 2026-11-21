@@ -164,7 +164,7 @@ function mergeLearningPayload(local,remote){
 }
 async function handleAuthState(user){
  const screen=$('#auth-screen'),signOut=$('#sign-out-button'),message=$('#auth-message');
- if(!user){document.body.classList.add('auth-required');if(screen)screen.classList.remove('hidden');if(signOut)signOut.classList.add('hidden');return}
+ if(!user){document.body.classList.add('auth-required');if(screen)screen.classList.remove('hidden');if(signOut)signOut.classList.add('hidden');if(message)message.textContent='Conexión lista. Inicia sesión o crea una cuenta para guardar tu avance.';return}
  document.body.classList.remove('auth-required');if(signOut)signOut.classList.remove('hidden');
  try{
   const remote=await window.MentorAuth.loadProgress();
