@@ -19,7 +19,7 @@ En Supabase > Authentication > URL Configuration define el Site URL como `https:
 
 ## IA
 
-En producción, la llave no se pega en el formulario local. Configura `GEMINI_API_KEY` en Vercel y redeploy. Las consultas al mentor se ejecutan en `api/mentor.py`; el navegador no recibe la llave. Gemini Search puede requerir facturación/cuota compatible.
+En producción cada usuario puede pegar y validar su propia llave en **Mi mentor**. La app la mantiene solo en memoria de la pestaña; al recargar, se ingresa de nuevo. Para validar y consultar, el navegador la envía por HTTPS en un encabezado a `api/configure.py` o `api/mentor.py`, que la reenvía a Google. La app no la guarda en Supabase, almacenamiento del navegador ni archivos, y no la escribe en logs. La persona debe confiar en el sitio de Mentor y proteger su llave; Gemini aplica las cuotas, facturación y términos del proyecto Google dueño de esa llave. `GEMINI_API_KEY` sigue siendo una alternativa global opcional para desarrollo o respaldo. Gemini Search puede requerir facturación/cuota compatible.
 
 ## Publicación
 

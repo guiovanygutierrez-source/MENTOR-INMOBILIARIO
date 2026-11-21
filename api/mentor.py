@@ -21,6 +21,7 @@ class handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_POST(self):
+        web_search = False
         try:
             size = int(self.headers.get('Content-Length', '0'))
             if size < 1 or size > MAX_BODY:
@@ -29,9 +30,15 @@ class handler(BaseHTTPRequestHandler):
             question = data.get('question') if isinstance(data, dict) else None
             if not isinstance(question, str) or not question.strip() or len(question) > 5000:
                 return self._json(400, {'error': 'Escribe una consulta de hasta 5.000 caracteres.'})
-            key = os.environ.get('GEMINI_API_KEY', '').strip()
+            # An explicitly supplied BYOK key takes precedence. Never log it or
+            # include it in a response; Vercel functions are stateless.
+            key = self.headers.get('x-gemini-api-key', '').strip()
             if not key:
-                return self._json(503, {'error': 'Gemini no está configurado. Añade GEMINI_API_KEY en Vercel > Settings > Environment Variables y vuelve a desplegar.'})
+                key = os.environ.get('GEMINI_API_KEY', '').strip()
+            if not key:
+                return self._json(503, {'error': 'Conecta una llave API de Gemini en Mi mentor para activar la IA.'})
+            if len(key) > 512 or any(ord(char) < 32 for char in key):
+                return self._json(400, {'error': 'La llave de Gemini no tiene un formato válido.'})
             web_search = data.get('webSearch') is True
             raw_history = data.get('history', [])
             history = []
