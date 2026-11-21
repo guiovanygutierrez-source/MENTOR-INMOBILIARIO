@@ -31,7 +31,7 @@ class handler(BaseHTTPRequestHandler):
                     return response(self, 502, {'error': 'Google no pudo validar la llave.'})
             return response(self, 200, {'ok': True})
         except urllib.error.HTTPError as error:
-            if error.code in (401, 403):
+            if error.code in (400, 401, 403):
                 return response(self, 401, {'error': 'Google rechazó la llave. Verifica que sea correcta y tenga Gemini API habilitada.'})
             if error.code == 429:
                 return response(self, 429, {'error': 'Google limitó la validación por cuota. Inténtalo más tarde.'})
