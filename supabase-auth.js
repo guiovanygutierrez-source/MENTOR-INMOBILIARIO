@@ -40,7 +40,11 @@
 
   async function signUp(email, password) {
     await ready;
-    const { data, error } = await client.auth.signUp({ email, password });
+    const { data, error } = await client.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: `${window.location.origin}/` }
+    });
     if (error) throw error;
     user = data.session?.user || null;
     return { user: data.user, session: data.session };

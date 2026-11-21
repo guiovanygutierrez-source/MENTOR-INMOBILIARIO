@@ -15,6 +15,7 @@ test('Supabase Auth y progreso remoto quedan protegidos por RLS', () => {
   assert.match(html, /supabase-js@2/);
   assert.match(auth, /signInWithPassword/);
   assert.match(auth, /auth\.signUp/);
+  assert.match(auth, /emailRedirectTo: `\$\{window\.location\.origin\}\/`/);
   assert.match(auth, /auth\.signOut/);
   assert.match(auth, /user_learning_progress/);
   assert.match(app, /function learningPayload/);
