@@ -28,13 +28,13 @@ const LESSON_EXTRAS = {
     questions: [{ prompt: '¿Qué debes considerar al comparar dos créditos de vivienda?', options: ['Solo la primera cuota anunciada.', 'Monto, plazo, modalidad, tasa, amortización y seguros.', 'El plazo más largo sin revisar el costo total.'], answer: 1, feedback: 'La Superintendencia Financiera recomienda comparar condiciones equivalentes y tener en cuenta seguros y sistema de amortización.' }]
   },
   4: {
-    visual: { alt: 'Diagrama para revisar una vivienda: categoría, etapa de entrega y documentos.', caption: 'La categoría, la etapa del proyecto y sus soportes se verifican por separado.', stages: [['Categoría', 'Regla vigente'], ['Etapa', 'Nueva o usada'], ['Soportes', 'Contrato y anexos']] },
+    visual: { alt: 'Diagrama que compara VIP, VIS y No VIS por su categoría y precio regulado.', caption: 'Primero entiende la categoría; luego compara ubicación, área y costos.', stages: [['VIP', 'Dentro de VIS'], ['VIS', 'Categoría amplia'], ['No VIS', 'Fuera de VIS']] },
     sections: [
-      ['Identifica qué significa la etiqueta', 'VIS y VIP son categorías con definición normativa y requisitos que deben revisarse para el periodo, ubicación y operación aplicables. Una etiqueta en el anuncio es una pista, no una certificación. No bases un presupuesto en topes recordados: consulta la fuente oficial y solicita al vendedor los documentos que sustentan la clasificación.'],
-      ['Evalúa el momento de entrega', 'En una vivienda usada puedes inspeccionar la unidad y pedir información de su historial; en una vivienda nueva o en construcción debes revisar además el cronograma, las especificaciones, garantías y qué ocurre si hay cambios o retrasos. Compara qué está comprobado hoy y qué sigue siendo una promesa contractual.']
+      ['No confundas precio con calidad', 'VIP tiene un límite máximo de precio menor que VIS, según las reglas aplicables. La categoría no indica por sí sola la ubicación, el área, los acabados ni el estado de la vivienda.'],
+      ['Compara según tu plan', 'Para vivir, pesa la ubicación y el costo mensual; para invertir, agrega arriendo posible, meses vacíos y gastos. En vivienda sobre planos, suma el plazo y la fecha de entrega.']
     ],
-    outcomes: ['Explicar por qué VIS y VIP requieren verificación vigente.', 'Distinguir riesgos de vivienda usada y sobre planos.', 'Leer oferta, anexos y condiciones de entrega como un conjunto.'],
-    questions: [{ prompt: 'Un proyecto se anuncia como VIS. ¿Cómo lo verificas?', options: ['Con el precio que aparece en una publicación antigua.', 'Con la definición vigente y los documentos del proyecto para ese caso.', 'Por el estrato o la apariencia del edificio.'], answer: 1, feedback: 'La categoría no se deduce del estrato ni de un anuncio; confirma las reglas y soportes actuales.' }]
+    outcomes: ['Explicar que VIP es una modalidad dentro de VIS.', 'Distinguir categoría de subsidio.', 'Comparar proyectos por precio, ubicación y costos.'],
+    questions: [{ prompt: '¿Cuál afirmación sobre VIS y VIP es correcta?', options: ['VIP forma parte de VIS y tiene un precio máximo menor según las reglas vigentes.', 'La sigla VIP garantiza un subsidio.', 'La calidad se puede deducir solo de la categoría.'], answer: 0, feedback: 'VIP está dentro de VIS. La categoría no garantiza subsidio ni define todas las características del inmueble.' }]
   },
   5: {
     visual: { alt: 'Ruta para revisar una ayuda de vivienda: programa oficial, requisitos y asignación.', caption: 'Solo una asignación confirmada que aplique al caso puede entrar en el presupuesto como recurso disponible.', stages: [['Programa', 'Operador oficial'], ['Requisitos', 'Hogar y vivienda'], ['Asignación', 'Confirmación escrita']] },
@@ -66,11 +66,11 @@ const LESSON_EXTRAS = {
   8: {
     visual: { alt: 'Esquema de inversión inmobiliaria: canon, costos de operación y flujo estimado.', caption: 'La rentabilidad neta exige restar vacancia y gastos; el flujo después de deuda es otra medida.', stages: [['Canon', 'Ingreso posible'], ['Operación', 'Vacancia y gastos'], ['Flujo', 'Antes y después de deuda']] },
     sections: [
-      ['Distingue las medidas', 'La rentabilidad bruta relaciona el canon anual teórico con el precio, pero no incluye vacancia ni gastos. La rentabilidad neta operativa descuenta costos operativos y usa ingresos cobrados estimados. El flujo de caja descuenta además pagos de deuda y otros desembolsos. Indica siempre qué conceptos entran en cada fórmula.'],
+      ['De lo posible a lo que queda', 'El arriendo de 12 meses dividido por el precio da el rendimiento anual antes de gastos. Después resta los meses vacíos y los costos operativos para estimar cuánto quedaría antes de deuda; si financiaste la compra, el flujo resta también las cuotas.'],
       ['Prueba un escenario difícil', 'Incluye meses sin arrendatario, reparación, administración, seguros, impuestos que correspondan y costos de compra. Estima cuánto tiempo puedes sostener la propiedad sin ingresos y qué tan fácil sería venderla. Usa cotizaciones y contratos cuando existan; marca lo que solo es un supuesto y revisa el resultado si cambia.']
     ],
-    outcomes: ['Calcular una rentabilidad bruta y reconocer sus límites.', 'Separar neto operativo de flujo después de deuda.', 'Probar cómo vacancia y gastos afectan el caso.'],
-    questions: [{ prompt: '¿Qué le falta a una rentabilidad bruta por arriendo?', options: ['El precio pedido por el inmueble.', 'Vacancia, costos, impuestos y financiación, según la medida que quieras calcular.', 'El canon mensual multiplicado por los meses del año.'], answer: 1, feedback: 'La rentabilidad bruta omite gastos y riesgos; define la medida y explicita qué costos restas.' }]
+    outcomes: ['Estimar el rendimiento anual antes de gastos.', 'Separar arriendo posible, ingreso tras vacancia y dinero tras gastos.', 'Probar cómo cambian los resultados si baja la ocupación.'],
+    questions: [{ prompt: '¿Qué describe el rendimiento anual antes de gastos?', options: ['La ganancia final luego de todos los costos y deudas.', 'El arriendo de 12 meses dividido por el precio, antes de vacancia y gastos.', 'La valorización futura del inmueble.'], answer: 1, feedback: 'Es un cálculo inicial: no descuenta los meses vacíos, los gastos ni la deuda.' }]
   },
   9: {
     visual: { alt: 'Flujo de negociación: recopilar evidencia, acordar condiciones y hacer una oferta clara.', caption: 'Una oferta útil se apoya en comparables, condiciones que puedes cumplir y acuerdos escritos.', stages: [['Evidencia', 'Comparables y estado'], ['Condiciones', 'Fechas y recursos'], ['Oferta', 'Clara y verificable']] },
@@ -93,9 +93,11 @@ const LESSON_EXTRAS = {
 };
 
 function lessonVisual(visual) {
+  const fills = ['#e2f1f3', '#fff0c2', '#f8e4dd'];
+  const accents = ['#226a72', '#97620e', '#a74d3f'];
   const nodes = visual.stages.map((stage, index) => {
     const x = 40 + index * 306;
-    return `<g><rect x="${x}" y="34" width="268" height="150" rx="18" fill="${index === 1 ? '#e9efe6' : '#ffffff'}" stroke="#dce5db"/><circle cx="${x + 34}" cy="70" r="20" fill="${index === 1 ? '#315c49' : '#e8efe9'}"/><text x="${x + 34}" y="77" text-anchor="middle" font-size="20" font-weight="700" fill="${index === 1 ? '#ffffff' : '#315c49'}">${index + 1}</text><text x="${x + 62}" y="75" font-size="30" font-weight="700" fill="#17372e">${esc(stage[0])}</text><path d="M${x + 24} 105H${x + 244}" stroke="#e9e9e2"/><text x="${x + 24}" y="139" font-size="20" fill="#66796e">${esc(stage[1])}</text></g>${index < 2 ? `<path d="M${x + 276} 109h22m-8-8 8 8-8 8" fill="none" stroke="#93aa94" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>` : ''}`;
+    return `<g><rect x="${x}" y="34" width="268" height="150" rx="18" fill="${fills[index]}" stroke="#dce5db"/><circle cx="${x + 34}" cy="70" r="20" fill="${accents[index]}"/><text x="${x + 34}" y="77" text-anchor="middle" font-size="20" font-weight="700" fill="#ffffff">${index + 1}</text><text x="${x + 62}" y="75" font-size="30" font-weight="700" fill="#17372e">${esc(stage[0])}</text><path d="M${x + 24} 105H${x + 244}" stroke="#d6ded8"/><text x="${x + 24}" y="139" font-size="20" fill="#4b6257">${esc(stage[1])}</text></g>${index < 2 ? `<path d="M${x + 276} 109h22m-8-8 8 8-8 8" fill="none" stroke="${accents[index]}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>` : ''}`;
   }).join('');
   return `<figure class="lesson-visual"><svg viewBox="0 0 940 218" role="img" aria-label="${esc(visual.alt)}" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="940" height="218" rx="24" fill="#f5f6f0"/>${nodes}</svg><figcaption>${esc(visual.caption)}</figcaption></figure>`;
 }

@@ -86,7 +86,7 @@ test('renderiza dashboard, protege módulos bloqueados y desbloquea el siguiente
     structuredClone, MentorCore: require('../core.js'),
   };
   vm.createContext(context);
-  const source = fs.readFileSync('lecciones-ampliadas.js', 'utf8') + '\n' + fs.readFileSync('features.js', 'utf8') + '\n' + fs.readFileSync('mentor-engine.js', 'utf8') + '\n' + fs.readFileSync('app.js', 'utf8') + '\n;globalThis.__spec={render,routePage,lessonPage,mentorReply,sendMentorQuestion,mentorContainsSensitiveData,getMentorResponse:()=>latestMentorResponse,analyzeMentorScenario:(type,input)=>MentorAssistant.analyzeScenario(type,input),glossaryPage,mentorPage,renderActiveTool,personalizedPlan,loanTable,propertyTable,achievementsPanel,activityPanel,getState:()=>state,setHash:x=>location.hash=x,setTool:x=>activeTool=x,modules:MODULES,extras:LESSON_EXTRAS,createLearningBackup,validateLearningBackup,restoreLearningBackup};';
+  const source = fs.readFileSync('lecciones-ampliadas.js', 'utf8') + '\n' + fs.readFileSync('features.js', 'utf8') + '\n' + fs.readFileSync('mentor-engine.js', 'utf8') + '\n' + fs.readFileSync('app.js', 'utf8') + '\n;globalThis.__spec={render,routePage,lessonPage,mentorReply,sendMentorQuestion,mentorContainsSensitiveData,getMentorResponse:()=>latestMentorResponse,analyzeMentorScenario:(type,input)=>MentorAssistant.analyzeScenario(type,input),glossaryPage,mentorPage,renderActiveTool,personalizedPlan,loanTable,propertyTable,achievementsPanel,activityPanel,number,parseCOP,formatCOPExample,field,buyScenarioSuggestion,getState:()=>state,setHash:x=>location.hash=x,setTool:x=>activeTool=x,modules:MODULES,extras:LESSON_EXTRAS,createLearningBackup,validateLearningBackup,restoreLearningBackup};';
   vm.runInContext(source, context);
   const api = context.__spec;
   assert.match(el('#page-content').innerHTML, /Tu ruta de aprendizaje/);
@@ -112,6 +112,14 @@ test('renderiza dashboard, protege módulos bloqueados y desbloquea el siguiente
     for (const question of api.extras[module.id].questions) assert.ok(Number.isInteger(question.answer) && question.answer >= 0 && question.answer < question.options.length, `respuesta ampliada inválida en ${module.title}`);
   }
   assert.match(api.lessonPage(2), /Bloqueado|Módulo bloqueado/);
+  assert.equal(api.parseCOP('280.000.000'), 280_000_000);
+  assert.equal(api.parseCOP('2.800.000,00'), 2_800_000);
+  assert.equal(api.formatCOPExample('Ej. 300000000'), 'Ej. 300.000.000');
+  el('buy-price').value = '280.000.000';
+  assert.equal(api.number('buy-price'), 280_000_000, 'el separador de miles no debe cambiar el cálculo');
+  assert.match(api.field('buy-price', 'Precio', '280000000'), /type="text"[^>]+data-format="cop"/);
+  assert.match(api.buyScenarioSuggestion({gap:5_000_000,monthly:2_000_000,income:8_000_000,expenses:3_000_000}), /VIS o VIP/);
+  assert.match(api.buyScenarioSuggestion({gap:0,monthly:6_000_000,income:8_000_000,expenses:3_000_000}), /supera/);
   for (let id = 1; id <= 10; id++) {
     api.getState().completed = Array.from({length: id - 1}, (_, i) => i + 1);
     const page = api.lessonPage(id);
@@ -252,6 +260,15 @@ test('renderiza dashboard, protege módulos bloqueados y desbloquea el siguiente
     vm.runInContext(`submitQuiz({dataset:{module:"${id}"}})`, context);
     assert.ok(api.getState().completed.includes(id), `la evaluación no desbloquea el módulo ${id}`);
     assert.equal(api.getState().scores[id], 100, `la puntuación no es correcta en el módulo ${id}`);
+    assert.match(api.lessonPage(id), /Volver a la pantalla principal/, `al aprobar el módulo ${id} debe aparecer una salida al inicio`);
+    if (id === 4) {
+      assert.match(api.lessonPage(id), /Toda VIP es VIS/);
+      assert.match(api.lessonPage(id), /no garantiza un subsidio/);
+    }
+    if (id === 8) {
+      assert.match(api.lessonPage(id), /rendimiento anual antes de gastos/i);
+      assert.doesNotMatch(api.lessonPage(id), /rentabilidad bruta/i);
+    }
   }
   let aiCalls = 0;
   context.fetch = async url => {

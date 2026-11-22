@@ -47,12 +47,14 @@
     const debt = finiteNonNegative(monthlyDebtPayment, 'La cuota de deuda');
     const capital = finiteNonNegative(investedCapital, 'El capital invertido');
     if (vacancy > 12) throw new RangeError('Los meses vacíos no pueden superar 12 al año.');
-    const grossIncome = rent * (12 - vacancy);
-    const operatingNetIncome = grossIncome - costs * 12;
+    const potentialAnnualRent = rent * 12;
+    const annualIncomeAfterVacancy = rent * (12 - vacancy);
+    const operatingNetIncome = annualIncomeAfterVacancy - costs * 12;
     const cashFlow = operatingNetIncome - debt * 12;
     return {
-      annualGrossIncome: grossIncome,
-      grossYieldPercent: p ? 100 * grossIncome / p : null,
+      potentialAnnualRent,
+      annualIncomeAfterVacancy,
+      grossYieldPercent: p ? 100 * potentialAnnualRent / p : null,
       operatingNetIncome,
       operatingNetYieldPercent: p ? 100 * operatingNetIncome / p : null,
       annualCashFlow: cashFlow,

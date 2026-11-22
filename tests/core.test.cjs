@@ -26,8 +26,9 @@ test('estima ingresos de arriendo y flujo con vacancia y deuda', () => {
     price: 300_000_000, monthlyRent: 2_200_000, vacantMonths: 1,
     monthlyOperatingCosts: 350_000, monthlyDebtPayment: 0, investedCapital: 90_000_000,
   });
-  assert.equal(scenario.annualGrossIncome, 24_200_000);
-  assert.equal(scenario.grossYieldPercent, 24_200_000 / 300_000_000 * 100);
+  assert.equal(scenario.potentialAnnualRent, 26_400_000);
+  assert.equal(scenario.annualIncomeAfterVacancy, 24_200_000);
+  assert.equal(scenario.grossYieldPercent, 8.8);
   assert.equal(scenario.operatingNetIncome, 20_000_000);
   assert.equal(scenario.operatingNetYieldPercent, 20_000_000 / 300_000_000 * 100);
   assert.equal(scenario.annualCashFlow, 20_000_000);
