@@ -25,25 +25,16 @@ function lessonVideoCard(moduleId) {
   return videos.map((video, index) => {
     const localUrl = `/videos/${video.file}`;
     const remoteUrl = `${LESSON_VIDEO_REMOTE_BASE}/${video.file}`;
+    const isLocalApp = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+    const sourceUrl = isLocalApp ? localUrl : remoteUrl;
     const label = video.label || (index ? 'AMPLÍA EL TEMA' : 'APRENDE EN VIDEO');
     return `<section class="lesson-video-card" aria-label="${esc(label)}: ${esc(video.title)}">
       <div class="lesson-video-copy"><div class="lesson-video-meta"><span>${esc(label)}</span>${video.duration ? `<span>Duración ${esc(video.duration)}</span>` : ''}</div>
         <h2>${esc(video.title)}</h2><p>${esc(help)}</p>
-        <video class="lesson-video-player" controls playsinline preload="metadata" aria-label="${esc(video.title)}" data-remote-src="${esc(remoteUrl)}">
-          <source src="${esc(localUrl)}" type="video/mp4">
+        <video class="lesson-video-player" controls playsinline preload="metadata" aria-label="${esc(video.title)}" src="${esc(sourceUrl)}" type="video/mp4">
           Tu navegador no puede reproducir este video. Actualiza el navegador para continuar.
         </video>
       </div>
     </section>`;
   }).join('');
 }
-
-// En el despliegue público los MP4 no viajan con el código fuente. Si falta el
-// archivo local, reintenta automáticamente con la copia pública de Supabase.
-document.addEventListener('error', (event) => {
-  const video = event.target;
-  if (!(video instanceof HTMLVideoElement) || !video.dataset.remoteSrc || video.dataset.remoteAttempted) return;
-  video.dataset.remoteAttempted = 'true';
-  video.src = video.dataset.remoteSrc;
-  video.load();
-}, true);
