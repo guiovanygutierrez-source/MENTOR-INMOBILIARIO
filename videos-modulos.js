@@ -1,5 +1,5 @@
 /* Videos de aprendizaje por módulo. Los MP4 locales se excluyen de Git; en Vercel
-   el reproductor usa el respaldo público de Supabase Storage. */
+   el reproductor carga la copia pública de Supabase Storage. */
 const LESSON_VIDEOS = {
   1: [{ title: 'Entender el mundo inmobiliario', duration: '5:57', file: '01-sector-inmobiliario.mp4' }],
   2: [{ title: 'Cómo leer un mercado local', duration: '4:38', file: '02-mercado-inmobiliario.mp4' }],

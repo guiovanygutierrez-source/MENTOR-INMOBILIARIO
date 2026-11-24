@@ -78,6 +78,6 @@ Los once archivos MP4 están en la carpeta local `videos/`, excluida de Git por 
 
 1. En Supabase, abre **Storage** y crea un bucket público llamado `mentor-videos`.
 2. Sube allí los once MP4 que están en la carpeta `videos/`. Conserva exactamente los nombres de archivo.
-3. Espera a que termine la carga. La app publicada detectará que no tiene el archivo local y reproducirá la copia pública de Supabase.
+3. Espera a que termine la carga. La app publicada carga los videos directamente desde las direcciones públicas de Supabase.
 
 El bucket es público para que las personas que usan la app puedan ver las cápsulas sin iniciar sesión en Supabase. No subas allí información privada. Los archivos fuente locales no se envían a GitHub; actualiza la copia del bucket al reemplazar un video. Los nombres y títulos están en `videos-modulos.js`.
