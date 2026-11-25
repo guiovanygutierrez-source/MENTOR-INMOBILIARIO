@@ -1,13 +1,29 @@
 {
   "name": "mentor-inmobiliario-colombia",
   "version": "1.0.0",
+  "type": "module",
   "private": true,
   "description": "Plataforma local de aprendizaje inmobiliario para Colombia",
   "scripts": {
-    "start": "python mentor_server.py",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite --host 127.0.0.1",
     "test": "node --test && python -m unittest discover -s tests -p test_mentor_server.py"
   },
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
+    "framer-motion": "^14.14.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.187.0",
+    "vite": "^8.3.8"
   }
 }

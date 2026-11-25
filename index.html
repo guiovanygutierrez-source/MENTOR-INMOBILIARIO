@@ -3,22 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#102b25">
+  <meta name="theme-color" content="#08111f">
   <meta name="description" content="Aprende a comprar vivienda en Colombia con una ruta guiada, herramientas prácticas y fuentes oficiales.">
   <title>Mentor Inmobiliario Colombia</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="premium.css">
-  <script src="core.js" defer></script>
-  <script src="lecciones-ampliadas.js" defer></script>
-  <script src="features.js" defer></script>
-  <script src="videos-modulos.js" defer></script>
-  <script src="mentor-engine.js" defer></script>
+  <link rel="stylesheet" href="premium.css?v=20261124-4">
+  <script src="core.js?v=20261124" defer></script>
+  <script src="lecciones-ampliadas.js?v=20261124" defer></script>
+  <script src="features.js?v=20261124" defer></script>
+  <script src="videos-modulos.js?v=20261124" defer></script>
+  <script src="mentor-engine.js?v=20261124" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="supabase-auth.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="supabase-auth.js?v=20261124" defer></script>
+  <script src="app.js?v=20261124" defer></script>
+  <script type="module" src="/src/visuals.jsx"></script>
 </head>
 <body>
   <div class="app-shell">
@@ -29,11 +27,11 @@
       </a>
       <p class="nav-caption">TU ESPACIO</p>
       <nav class="main-nav">
-        <a class="nav-link active" href="#inicio" data-page="inicio"><span class="nav-icon">⌂</span> Mi aprendizaje</a>
-        <a class="nav-link" href="#ruta" data-page="ruta"><span class="nav-icon">▤</span> Ruta de aprendizaje</a>
-        <a class="nav-link" href="#herramientas" data-page="herramientas"><span class="nav-icon">⌁</span> Herramientas</a>
-        <a class="nav-link" href="#glosario" data-page="glosario"><span class="nav-icon">Aa</span> Glosario</a>
-        <a class="nav-link" href="#mentor" data-page="mentor"><span class="nav-icon">✳</span> Mi mentor</a>
+        <a class="nav-link active" href="#inicio" data-page="inicio"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/></svg></span> Mi aprendizaje</a>
+        <a class="nav-link" href="#ruta" data-page="ruta"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5"/></svg></span> Ruta de aprendizaje</a>
+        <a class="nav-link" href="#herramientas" data-page="herramientas"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19h16M6 16l4-8 4 5 3-7 2 10"/><circle cx="10" cy="8" r="1"/><circle cx="14" cy="13" r="1"/></svg></span> Herramientas</a>
+        <a class="nav-link" href="#glosario" data-page="glosario"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H20v17H7.5A2.5 2.5 0 0 1 5 17.5zM5 6h15M9 10h7M9 14h7"/><path d="M5 17.5A2.5 2.5 0 0 1 7.5 15H20"/></svg></span> Glosario</a>
+        <a class="nav-link" href="#mentor" data-page="mentor"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 2 1.6 6.4L20 6l-2.4 6 6.4 1.6-6.4 1.6L20 21l-6.4-2.4L12 25l-1.6-6.4L4 21l2.4-6.4L0 13l6.4-1L4 6l6.4 2.4z" transform="translate(1 -1) scale(.92)"/></svg></span> Mi mentor</a>
       </nav>
       <div class="sidebar-bottom">
         <div class="sidebar-tip"><span class="tip-spark">✦</span><p>Una buena decisión empieza con una buena pregunta.</p><small>APRENDER · ANALIZAR · DECIDIR</small></div>
@@ -42,11 +40,12 @@
       </div>
     </aside>
     <main class="main-area">
-      <header class="topbar"><button class="mobile-menu" id="mobile-menu" aria-label="Abrir menú" aria-expanded="false" aria-controls="sidebar">☰</button><div class="breadcrumb"><span>MENTOR</span><span class="crumb-divider">/</span><strong id="current-section">Mi aprendizaje</strong></div><div class="global-search"><label class="sr-only" for="global-search-input">Buscar lecciones, temas y herramientas</label><span aria-hidden="true">⌕</span><input id="global-search-input" type="search" placeholder="Buscar temas o herramientas…" autocomplete="off"><div id="global-search-results" class="hidden"></div></div><div class="topbar-right"><span class="saved-state"><i></i> Progreso en tu cuenta</span><button class="top-avatar" id="top-avatar" aria-label="Abrir mi perfil">M</button></div></header>
+      <header class="topbar"><button class="mobile-menu" id="mobile-menu" aria-label="Abrir menú" aria-expanded="false" aria-controls="sidebar">☰</button><div class="breadcrumb"><span>MENTOR</span><span class="crumb-divider">/</span><strong id="current-section">Mi aprendizaje</strong></div><div class="global-search"><label class="sr-only" for="global-search-input">Buscar lecciones, temas y herramientas</label><span aria-hidden="true">⌕</span><input id="global-search-input" type="search" placeholder="Buscar temas o herramientas…" autocomplete="off"><div id="global-search-results" class="hidden"></div></div><div class="topbar-right"><a class="top-mentor-link" href="#mentor"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 13.5 9l6-2.5-2.5 6 6 1.5-6 1.5 2.5 6-6-2.5L12 25l-1.5-6L4.5 21.5 7 15.5 1 14l6-1.5-2.5-6L10.5 9z" transform="translate(1 -2) scale(.92)"/></svg><span>Mentor</span></a><span class="saved-state"><i></i> Progreso en tu cuenta</span><button class="top-avatar" id="top-avatar" aria-label="Abrir mi perfil">M</button></div></header>
       <div class="page-content" id="page-content" tabindex="-1"></div>
     </main>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div id="experience-root"></div>
   <dialog class="modal" id="onboarding-modal" aria-labelledby="onboarding-title">
     <form id="onboarding-form" method="dialog">
       <div class="modal-brand"><span class="brand-mark"><svg viewBox="0 0 32 32"><path d="M4 15.1 16 5l12 10.1v12a1.9 1.9 0 0 1-1.9 1.9H5.9A1.9 1.9 0 0 1 4 27.1z"/><path d="M12 29V17h8v12M2 15l14-12 14 12"/></svg></span><span>MENTOR INMOBILIARIO</span></div>

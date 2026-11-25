@@ -7,3 +7,5 @@ tmp/
 videos/
 MENTOR-INMOBILIARIO-PARA-AMIGA/
 MENTOR-INMOBILIARIO-PARA-AMIGA.zip
+node_modules/
+dist/

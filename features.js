@@ -43,6 +43,87 @@ function dashboardGuidePanel() {
   return `<section class="dashboard-guide panel"><div><p class="eyebrow">EMPIEZA A TU RITMO</p><h2>Tu siguiente paso, claro y sencillo</h2><p>Haz un diagnóstico breve, estudia un módulo y practica con un caso. Tu avance queda guardado en este navegador.</p></div><div class="guide-actions"><a class="button button-primary" href="#diagnostico">${diagnostic ? 'Revisar mi diagnóstico' : 'Encontrar mi punto de partida'} →</a><a class="source-link" href="#ruta">Ver los 10 módulos</a></div>${diagnostic ? `<p class="guide-status">Último diagnóstico: ${diagnostic.score}/5 respuestas correctas. <a href="#diagnostico">Ver recomendaciones</a></p>` : '<p class="guide-status">Puedes usar un nombre o cifras de ejemplo; no necesitas compartir información personal.</p>'}</section>`;
 }
 
+function learningPathPreview() {
+  const next = nextModule();
+  const start = Math.max(0, Math.min(next.id - 2, MODULES.length - 4));
+  const modules = MODULES.slice(start, start + 4);
+  return `<section class="learning-path-preview" aria-labelledby="learning-path-title"><div class="learning-path-heading"><div><p class="eyebrow">TU RUTA, PASO A PASO</p><h2 id="learning-path-title">Avanza a tu ritmo</h2><p>Selecciona un módulo disponible para seguir. Los demás se irán abriendo al completar cada lección.</p></div><a class="text-link" href="#ruta">Ver los 10 módulos →</a></div><div class="learning-path-steps" aria-label="Vista previa interactiva de tu ruta">${modules.map(module => {
+    const done = state.completed.includes(module.id);
+    const locked = !done && !isUnlocked(module.id);
+    const current = module.id === next.id && !done;
+    const status = done ? 'Completado' : current ? 'Siguiente paso' : locked ? 'Se abre después' : 'Disponible';
+    const href = locked ? '#ruta' : `#leccion/${module.id}`;
+    return `<a class="learning-path-step ${done ? 'is-complete' : ''} ${current ? 'is-current' : ''} ${locked ? 'is-locked' : ''}" href="${href}" ${current ? 'aria-current="step"' : ''} aria-label="Módulo ${String(module.id).padStart(2,'0')}: ${esc(module.title)}. ${status}${locked ? ', completa el anterior para abrirlo' : ''}"><span class="learning-path-number">${done ? '✓' : String(module.id).padStart(2,'0')}</span><span class="learning-path-copy"><strong>${esc(module.title)}</strong><small>${status} · ${module.duration}</small></span><span class="learning-path-arrow" aria-hidden="true">${locked ? '⌑' : '→'}</span></a>`;
+  }).join('')}</div><p class="learning-path-diagnostic">¿Quieres personalizar lo que sigue? <a href="#diagnostico">Revisa tu punto de partida →</a></p></section>`;
+}
+
+function routeReviewSuggestions() {
+  const suggestions = new Map();
+  const add = (moduleId, source, detail) => {
+    const module = MODULES[moduleId - 1];
+    if (!module || !detail) return;
+    if (!suggestions.has(moduleId)) suggestions.set(moduleId, { module, details: [] });
+    const entry = suggestions.get(moduleId);
+    const value = `${source}: ${detail}`;
+    if (!entry.details.includes(value)) entry.details.push(value);
+  };
+
+  const diagnostic = state.diagnostic;
+  if (diagnostic && Array.isArray(diagnostic.answers)) {
+    DIAGNOSTIC_QUESTIONS.forEach((question, index) => {
+      const answer = diagnostic.answers[index];
+      if (answer !== null && answer !== undefined && Number.isInteger(Number(answer)) && Number(answer) !== question.answer) {
+        add(question.module, 'Diagnóstico', question.prompt);
+      }
+    });
+  } else if (diagnostic?.weakModules?.length) {
+    diagnostic.weakModules.forEach(moduleId => {
+      const question = DIAGNOSTIC_QUESTIONS.find(item => item.module === Number(moduleId));
+      add(Number(moduleId), 'Diagnóstico', question?.prompt || 'Repasar este tema del diagnóstico.');
+    });
+  }
+
+  MODULES.forEach(module => {
+    const attempt = state.attempts?.[module.id];
+    const questions = [
+      { prompt: module.lesson.question, answer: module.lesson.answer },
+      ...(LESSON_EXTRAS[module.id]?.questions || []),
+    ];
+    if (Array.isArray(attempt?.answers)) {
+      attempt.answers.forEach((answer, index) => {
+        const question = questions[index];
+        if (question && Number(answer) !== question.answer) {
+          add(module.id, 'Evaluación', question.prompt);
+        }
+      });
+    } else if (attempt?.correct === false) {
+      add(module.id, 'Evaluación', module.lesson.question);
+    } else if (Number.isFinite(Number(state.scores?.[module.id])) && Number(state.scores[module.id]) < 100) {
+      add(module.id, 'Resultado guardado', `Mejor resultado: ${state.scores[module.id]}%.`);
+    }
+  });
+
+  return [...suggestions.values()].slice(0, 4);
+}
+
+function routeReviewPanel() {
+  const suggestions = routeReviewSuggestions();
+  const hasEvidence = Boolean(state.diagnostic || Object.keys(state.attempts || {}).length || Object.keys(state.scores || {}).length);
+  return `<section class="route-review panel" aria-labelledby="route-review-title"><div class="route-review-heading"><div><h2 id="route-review-title">Temas que puedes repasar</h2><p>Basado en tus respuestas guardadas; es una guía de estudio, no una medición completa de dominio.</p></div><a class="source-link" href="#diagnostico">${state.diagnostic ? 'Ver diagnóstico' : 'Hacer diagnóstico'} →</a></div>${suggestions.length ? `<ul class="route-review-list">${suggestions.map(({ module, details }) => `<li><div><strong>Módulo ${String(module.id).padStart(2, '0')} · ${esc(module.title)}</strong><p>${details.map(esc).join(' · ')}</p></div><button class="route-review-open" type="button" data-route-preview="${module.id}" aria-controls="route-module-${module.id}">Ver módulo</button></li>`).join('')}</ul>` : `<p class="route-review-empty">${hasEvidence ? '¡Buen avance! No aparecen respuestas incorrectas registradas para repasar.' : 'Cuando completes el diagnóstico o una evaluación, aquí aparecerán sugerencias basadas en tus respuestas.'}</p>`}</section>`;
+}
+
+function routeModuleDetails(module) {
+  const complete = state.completed.includes(module.id);
+  const locked = !complete && !isUnlocked(module.id);
+  const outcomes = LESSON_EXTRAS[module.id]?.outcomes || [];
+  const prerequisite = module.id === 1
+    ? 'No necesitas completar otro módulo.'
+    : locked
+      ? `Para empezar, completa el módulo ${String(module.id - 1).padStart(2, '0')} · ${MODULES[module.id - 2].title}.`
+      : `Requisito cubierto: completaste el módulo anterior.`;
+  return `<div class="route-module-detail"><div class="route-detail-meta"><span>${esc(module.duration)}</span><span>${complete ? `Mejor resultado: ${state.scores[module.id] ?? 0}%` : locked ? 'Vista previa disponible' : 'Listo para empezar'}</span></div><h3>${esc(module.title)}</h3><p>${esc(module.description)}</p><div class="route-outcomes"><h4>Al terminar podrás</h4><ul>${outcomes.slice(0, 3).map(outcome => `<li>${esc(outcome)}</li>`).join('')}</ul></div><p class="route-prerequisite">${esc(prerequisite)}</p>${locked ? `<button class="button button-primary" type="button" disabled>Completa el módulo anterior</button>` : `<a class="button button-primary" href="#leccion/${module.id}">${complete ? 'Repasar módulo' : 'Empezar módulo'}</a>`}</div>`;
+}
+
 function createLearningBackup() {
   const profile = state.profile;
   return {

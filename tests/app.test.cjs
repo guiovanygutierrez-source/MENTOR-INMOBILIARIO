@@ -37,6 +37,7 @@ test('la aplicación incluye los diez módulos educativos y sus elementos pedag�
   const app = fs.readFileSync('mentor-engine.js', 'utf8') + '\n' + fs.readFileSync('app.js', 'utf8');
   const html = fs.readFileSync('index.html', 'utf8');
   const css = fs.readFileSync('styles.css', 'utf8') + fs.readFileSync('premium.css', 'utf8');
+  const scene = fs.readFileSync('three-scene.js', 'utf8');
   const server = fs.readFileSync('mentor_server.py', 'utf8');
   const extendedContent = fs.readFileSync('lecciones-ampliadas.js', 'utf8');
   const ids = [...app.matchAll(/\{id:(\d+),title:/g)].map(m => Number(m[1]));
@@ -49,13 +50,31 @@ test('la aplicación incluye los diez módulos educativos y sus elementos pedag�
   assert.match(html, /<html lang="es">/);
   assert.match(html, /name="viewport"/);
   assert.ok(html.includes('premium.css'));
+  assert.match(html, /type="module" src="\/src\/visuals\.jsx/);
+  assert.match(html, /id="experience-root"/);
+  assert.match(html, /theme-color" content="#08111f"/);
   assert.match(html, /id="mobile-menu"[^>]*aria-expanded="false"[^>]*aria-controls="sidebar"/);
   assert.match(css, /@media\(max-width:760px\)/);
   assert.match(css, /\.field-grid\s*\{\s*grid-template-columns:1fr; gap:11px/);
   assert.match(css, /\.field input,\.field select,\.mentor-case-fields \.field input,\.modal \.field input,\.modal select,#mentor-analysis-type\s*\{\s*min-height:44px; font-size:16px/);
-  assert.match(app, /neighborhood-illustration/, 'la portada debe incluir la escena isométrica local');
-  assert.match(css, /\.hero-art \.neighborhood-illustration\s*\{[^}]*animation/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce[^}]*neighborhood-illustration\s*\{\s*animation:none/);
+  assert.match(app, /studio-hero-drawing/, 'la portada debe incluir la lámina arquitectónica didáctica');
+  assert.match(app, /data-three-scene="home"/);
+  assert.match(css, /--navy:#081321/);
+  assert.match(css, /\.studio-fallback-drawing/);
+  assert.match(scene, /three@0\.187\.0\/build\/three\.module\.js/);
+  assert.match(scene, /new ResizeObserver/);
+  assert.match(scene, /prefersReducedMotion/);
+  assert.match(scene, /pointermove/);
+  assert.match(scene, /se conserva el esquema estático/);
+  const visual = fs.readFileSync('src/visuals.jsx', 'utf8');
+  assert.match(visual, /@react-three\/fiber/);
+  assert.match(visual, /ScrollControls/);
+  assert.match(visual, /framer-motion/);
+  assert.match(visual, /kind:'finance'/);
+  assert.match(visual, /kind:'nodes'/);
+  assert.match(app, /home-plan/, 'el plano debe ofrecer zonas interactivas para practicar');
+  assert.match(css, /\.plan-zone:hover path/);
+  assert.match(css, /prefers-reduced-motion:reduce/);
   assert.match(css, /@media\(max-width:360px\)[^{]*\{[^}]*backup-actions/);
   assert.match(css, /\.backup-note\s*\{/);
   assert.ok(!/sk-[A-Za-z0-9]{20,}/.test(app + html));
@@ -79,19 +98,20 @@ test('renderiza dashboard, protege módulos bloqueados y desbloquea el siguiente
   const listeners = {};
   const context = {
     document: { querySelector: el, getElementById: el, querySelectorAll: () => [], addEventListener: (name, fn) => { listeners[name] = fn; } },
-    __scrollCalls: [], window: { addEventListener(){}, scrollTo(...args){ context.__scrollCalls.push(args); } }, location: { hash: '' },
+    __scrollCalls: [], window: { location: { hostname: 'localhost' }, addEventListener(){}, scrollTo(...args){ context.__scrollCalls.push(args); } }, location: { hash: '', hostname: 'localhost' },
     localStorage: { getItem: key => store.get(key) || null, setItem: (key, value) => store.set(key, value) },
     FormData: class { get(name){ const index = Number(name.slice(name.lastIndexOf('-') + 1)); return context.__quizAnswers?.[index] ?? context.__quizAnswer ?? null; } }, __quizAnswer: '99',
-    setTimeout: () => 1, clearTimeout(){}, console, Intl, Date, JSON, Math, Number, String, Array,
+    setTimeout: () => 1, clearTimeout(){}, console, Intl, Date, JSON, Math, Number, String, Array, URL,
     structuredClone, MentorCore: require('../core.js'),
   };
   vm.createContext(context);
-  const source = fs.readFileSync('lecciones-ampliadas.js', 'utf8') + '\n' + fs.readFileSync('features.js', 'utf8') + '\n' + fs.readFileSync('mentor-engine.js', 'utf8') + '\n' + fs.readFileSync('app.js', 'utf8') + '\n;globalThis.__spec={render,routePage,lessonPage,mentorReply,sendMentorQuestion,mentorContainsSensitiveData,getMentorResponse:()=>latestMentorResponse,analyzeMentorScenario:(type,input)=>MentorAssistant.analyzeScenario(type,input),glossaryPage,mentorPage,renderActiveTool,personalizedPlan,loanTable,propertyTable,achievementsPanel,activityPanel,number,parseCOP,formatCOPExample,field,buyScenarioSuggestion,getState:()=>state,setHash:x=>location.hash=x,setTool:x=>activeTool=x,modules:MODULES,extras:LESSON_EXTRAS,createLearningBackup,validateLearningBackup,restoreLearningBackup};';
+  const source = fs.readFileSync('lecciones-ampliadas.js', 'utf8') + '\n' + fs.readFileSync('features.js', 'utf8') + '\n' + fs.readFileSync('videos-modulos.js', 'utf8') + '\n' + fs.readFileSync('mentor-engine.js', 'utf8') + '\n' + fs.readFileSync('app.js', 'utf8') + '\n;globalThis.__spec={render,routePage,lessonPage,mentorReply,sendMentorQuestion,mentorContainsSensitiveData,getMentorResponse:()=>latestMentorResponse,analyzeMentorScenario:(type,input)=>MentorAssistant.analyzeScenario(type,input),glossaryPage,mentorPage,renderActiveTool,personalizedPlan,loanTable,propertyTable,achievementsPanel,activityPanel,number,parseCOP,formatCOPExample,field,buyScenarioSuggestion,getState:()=>state,setHash:x=>location.hash=x,setTool:x=>activeTool=x,modules:MODULES,extras:LESSON_EXTRAS,createLearningBackup,validateLearningBackup,restoreLearningBackup};';
   vm.runInContext(source, context);
   const api = context.__spec;
-  assert.match(el('#page-content').innerHTML, /Tu ruta de aprendizaje/);
+  assert.match(el('#page-content').innerHTML, /TU SIGUIENTE PASO/);
+  assert.match(el('#page-content').innerHTML, /Pregúntale a Mentor/);
   const routeMarkup = api.routePage();
-  assert.match(routeMarkup, /Módulo 10/);
+  assert.match(routeMarkup, /Proyecto final/);
   assert.match(routeMarkup, /data-export-learning/);
   assert.match(routeMarkup, /data-import-learning/);
   assert.match(routeMarkup, /learning-backup-file/);
@@ -157,6 +177,10 @@ test('renderiza dashboard, protege módulos bloqueados y desbloquea el siguiente
   assert.match(api.mentorPage(), /Respuesta de IA · sin fuentes web/);
   assert.match(api.mentorPage(), /id="mentor-web-search"/);
   assert.equal((api.mentorPage().match(/id="mentor-web-search"/g) || []).length, 1, 'el mentor debe mostrar una sola casilla de búsqueda web');
+  assert.match(api.glossaryPage(), /class="glossary-ask"[^>]+data-ask-mentor=/, 'cada término debe ofrecer una pregunta a Mentor');
+  api.getState().completed = [1];
+  assert.match(api.lessonPage(1), /data-ask-mentor=/, 'la lección debe permitir preguntar a Mentor con contexto');
+  assert.match(api.mentorPage(), /id="mentor-key-form"/, 'la sección del mentor debe conservar la conexión de Gemini');
   api.getState().chat = [{role:'mentor',text:'Respuesta de prueba.',mode:'ia',links:[{title:'Minvivienda',url:'https://minvivienda.gov.co/'}]}];
   assert.match(api.mentorPage(), /Respuesta de IA · con fuentes web/);
   api.getState().chat = [{role:'mentor',text:'Respuesta de prueba.',mode:'local'}];

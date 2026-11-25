@@ -12,6 +12,8 @@ from urllib.parse import urlparse
 
 
 ROOT = Path(__file__).resolve().parent
+BUILT_WEB_ROOT = ROOT / "dist"
+WEB_ROOT = Path(os.environ.get("MENTOR_WEB_ROOT", "")).resolve() if os.environ.get("MENTOR_WEB_ROOT") else (BUILT_WEB_ROOT if (BUILT_WEB_ROOT / "index.html").is_file() else ROOT)
 MAX_BODY = 16_000
 RATE_WINDOW_SECONDS = 60
 RATE_LIMIT = 12
@@ -224,7 +226,7 @@ def build_gemini_body(history, question, web_search=False):
 
 class MentorHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, directory=str(ROOT), **kwargs)
+        super().__init__(*args, directory=str(WEB_ROOT), **kwargs)
 
     def do_GET(self):
         if self.path == "/api/supabase-config":

@@ -2,13 +2,20 @@
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 import os
+import shutil
+import subprocess
 import webbrowser
-
-from mentor_server import MentorHandler
-
 
 def main():
     package = Path(__file__).resolve().parent
+    print("Preparando la versión web optimizada de Mentor…")
+    npm = shutil.which("npm.cmd") or shutil.which("npm")
+    if not npm:
+        raise RuntimeError("No encontré npm. Instala Node.js para compilar la app web.")
+    subprocess.run([npm, "run", "build"], cwd=package, check=True, shell=npm.lower().endswith(".cmd"))
+    os.environ["MENTOR_WEB_ROOT"] = str(package / "dist")
+    from mentor_server import MentorHandler
+
     port_file = package / ".mentor-port"
     try:
         preferred = int(port_file.read_text(encoding="ascii").strip())

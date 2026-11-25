@@ -60,10 +60,20 @@
   async function loadProgress() {
     await ready;
     if (!user) throw new Error('Inicia sesión para cargar tu progreso.');
-    const { data, error } = await client.from('user_learning_progress')
-      .select('progress').eq('user_id', user.id).maybeSingle();
-    if (error) throw error;
-    return data?.progress || null;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
+    try {
+      const { data, error } = await client.from('user_learning_progress')
+        .select('progress').eq('user_id', user.id).maybeSingle()
+        .abortSignal(controller.signal);
+      if (error) throw error;
+      return data?.progress || null;
+    } catch (error) {
+      if (controller.signal.aborted) throw new Error('La carga del progreso desde Supabase tardó más de 12 segundos. Puedes continuar en la app; vuelve a cargar la página para intentar sincronizar otra vez.');
+      throw error;
+    } finally {
+      clearTimeout(timeout);
+    }
   }
 
   async function saveProgress(progress) {
