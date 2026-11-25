@@ -1268,3 +1268,5 @@ body::before { content:""; position:fixed; inset:0; z-index:0; pointer-events:no
 }
 @media(hover:none) { .studio-hero-drawing:hover { transform:none; } }
 @media(prefers-reduced-motion:reduce) { .studio-hero-drawing,.studio-three-canvas,.studio-fallback-drawing { transition:none!important; } }
+
+@media(max-width:600px){.lesson-visual{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain;padding:0 0 8px;scrollbar-color:#547a91 #132238}.lesson-visual svg{width:940px;max-width:none}.lesson-visual figcaption{color:#c3d8e8;font-size:12px;line-height:1.65}.lesson-visual::-webkit-scrollbar{height:6px}.lesson-visual::-webkit-scrollbar-thumb{background:#547a91;border-radius:6px}}
