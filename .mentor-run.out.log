@@ -1,0 +1,34 @@
+Preparando la versi�n web optimizada de Mentor�
+
+> mentor-inmobiliario-colombia@1.0.0 build
+> vite build
+
+vite v8.3.8 building client environment for production...
+transforming...
+✓ 998 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                10.34 kB │ gzip:   3.39 kB
+dist/assets/manrope-latin-ext-CXlhzf6K.woff2   15.21 kB
+dist/assets/dm-sans-latin-ext-BccsHJ30.woff2   18.19 kB
+dist/assets/manrope-latin-BmzK5LJ9.woff2       24.43 kB
+dist/assets/dm-sans-latin-CwMReqGs.woff2       36.98 kB
+dist/assets/index-CIoBBMMR.css                101.10 kB │ gzip:  22.48 kB
+dist/assets/rolldown-runtime-XKyaHtl9.js        0.72 kB │ gzip:   0.42 kB
+dist/assets/vendor-DTcOybQT.js                  8.33 kB │ gzip:   3.43 kB
+dist/assets/vendor-C87Hiv1C.js                 11.77 kB │ gzip:   4.67 kB
+dist/assets/index-BWEjBaN8.js                  14.81 kB │ gzip:   5.51 kB
+dist/assets/vendor-BZkf6H7W.js                 14.84 kB │ gzip:   5.49 kB
+dist/assets/vendor-Dyd7SVLq.js                 19.64 kB │ gzip:   6.03 kB
+dist/assets/vendor-CFy8bF3B.js                 26.59 kB │ gzip:  10.23 kB
+dist/assets/vendor-B1nq3e2m.js                 56.34 kB │ gzip:  20.28 kB
+dist/assets/vendor-DmJ8n0u7.js                 67.75 kB │ gzip:  22.69 kB
+dist/assets/vendor-ntdBsd0o.js                167.29 kB │ gzip:  53.00 kB
+dist/assets/vendor-CVLa2AEG.js                207.00 kB │ gzip:  64.48 kB
+dist/assets/vendor-BJYKkNRZ.js                367.46 kB │ gzip:  89.87 kB
+dist/assets/vendor-BF58tRDi.js                383.44 kB │ gzip: 101.92 kB
+
+✓ built in 715ms
+Mentor Inmobiliario est� disponible en http://127.0.0.1:18765/
+Deja esta ventana abierta mientras usas la p�gina. Ctrl+C detiene el servidor.
+Modo local listo. Para usar Gemini, configura GEMINI_API_KEY en este computador; el nivel gratuito tiene cuotas y Google puede usar el contenido para mejorar sus productos.

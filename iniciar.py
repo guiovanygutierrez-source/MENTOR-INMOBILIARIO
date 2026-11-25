@@ -4,6 +4,7 @@ from pathlib import Path
 import os
 import shutil
 import subprocess
+import threading
 import webbrowser
 
 def main():
@@ -48,12 +49,24 @@ def main():
         print(f"IA opcional configurada en este computador (proveedor: {provider}).")
     else:
         print("Modo local listo. Para usar Gemini, configura GEMINI_API_KEY en este computador; el nivel gratuito tiene cuotas y Google puede usar el contenido para mejorar sus productos.")
-    webbrowser.open_new_tab(url)
+    # Empieza a atender solicitudes antes de abrir el navegador. En Windows,
+    # abrir la pestaña puede retrasarse y el navegador llegaba antes al puerto.
+    server_thread = threading.Thread(target=server.serve_forever, daemon=True)
+    server_thread.start()
+
+    def open_browser():
+        try:
+            webbrowser.open_new_tab(url)
+        except Exception as error:
+            print(f"No pude abrir el navegador automáticamente: {error}")
+
+    threading.Thread(target=open_browser, daemon=True).start()
     try:
-        server.serve_forever()
+        threading.Event().wait()
     except KeyboardInterrupt:
         print("\nServidor detenido.")
     finally:
+        server.shutdown()
         server.server_close()
 
 

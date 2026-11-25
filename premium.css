@@ -1176,6 +1176,9 @@ body::before { content:""; position:fixed; inset:0; z-index:0; pointer-events:no
 .tool-help ol { color:#b6cde0; }
 .tool-card { background:#142238; }
 .tool-card h2,.tool-card h3 { color:#e2f3ff; }
+.result-card { border:1px solid #2b425c; background:#0e1d30; color:#c8deef; }
+.result-unit { color:#a4bfd5; }
+.budget-guidance p { color:#c3d9e9; }
 .field label,.field-label { color:#bdd3e6; }
 .field input,.field select,.field textarea,.glossary-toolbar .search-box,.glossary-toolbar input,.mentor-key-row input,.chat-composer textarea,.auth-card input { border-color:#34506d; background:#0e1d30; color:#e1f3ff; }
 .field input::placeholder,.field textarea::placeholder,.chat-composer textarea::placeholder,.mentor-key-row input::placeholder { color:#8da8c0; }
